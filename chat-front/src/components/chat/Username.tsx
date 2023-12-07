@@ -18,13 +18,16 @@ const Username = ({ socket, setUsername }: Props) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+    <form onSubmit={handleSubmit} className="my-2">
+      <h2 className="text-xl">Before chat, enter a username</h2>
+      <div className="flex gap-2 mt-3">
+      <input type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-      />
-      <button type="submit">Submit</button>
+        placeholder="Write an username..."
+        className="input input-bordered w-full max-w-xs" />
+      <button type="submit" className="btn btn-accent">Submit</button>
+      </div>
     </form>
   );
 };

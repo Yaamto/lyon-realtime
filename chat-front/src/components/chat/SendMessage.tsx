@@ -21,13 +21,14 @@ const SendMessage = ({ socket, username }: Props) => {
     setText("");
   };
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
+    <form onSubmit={handleSubmit} className="flex gap-2">
+      <input type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        placeholder="Write a message..."
+        className="input input-bordered w-full max-w-xs"
       />
-      <button type="submit">Submit</button>
+      <button type="submit" className="btn btn-accent">Send</button>
     </form>
   );
 };
