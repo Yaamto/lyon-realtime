@@ -65,7 +65,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   clients: { client: Socket; username?: string }[] = [];
   chatMessages: IMessage[] = [];
 
-  
+
   @SubscribeMessage('message')
   handleMessage(client: any, payload: any): string {
     this.server.emit('message', payload);
@@ -99,12 +99,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('translate-message')
   async handleTranslate(client: any, message: any, language: any){
     const currentMessage = this.chatMessages.find(({timeSent}) => timeSent === message.msg.timeSent)
-    // console.log(message)
    const currentMessageIndex =  this.chatMessages.findIndex((msg: any) => msg === currentMessage)
-  //  console.log(currentMessageIndex)
+
     if(currentMessageIndex != -1){
       const messageTranslated = await TranslateMessage(message.language, currentMessage)
-      // console.log(messageTranslated)
       this.chatMessages.splice(currentMessageIndex, 1, messageTranslated)
       this.server.emit('messages-old', this.chatMessages)
     }
