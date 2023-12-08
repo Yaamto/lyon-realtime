@@ -11,14 +11,15 @@ interface Props {
   message: IMessage;
   isMe: boolean;
   socket: Socket;
+  language: string;
 }
 
-const Message = ({ message, isMe, socket }: Props) => {
+const Message = ({ message, isMe, socket, language }: Props) => {
   const [verificationData, setVerificationData] = useState("")
   const [infoStatus, setInfoStatus] = useState<"true" | "false" | "unverifiable">()
-  const options = ["French", "English", "German", "Arabic", "Norvegian", "Spanish", "Italian", "Russian", "Chinese", "Japanese"]
 
-  const handleTranslate = (msg: any, language: any) => {
+  const handleTranslate = (msg: any) => {
+    console.log(language)
     socket.emit("translate-message", {msg, language})
   }
 
@@ -56,20 +57,17 @@ const Message = ({ message, isMe, socket }: Props) => {
       >
         {message.content}
       </div>
-      <select className="select select-bordered " onChange={(e) => handleTranslate(message, e.target.value)}>
-            <option disabled selected>Translate</option>
-            {options.map((option) => (
-              <option value={option}>{option}</option>
-            ))}
-      </select>
-      <button className="btn btn-outline btn-accent btn-xs" onClick={handleVerify}>Verify</button>
-      {verificationData && 
-      <div className={`chat flex ${isMe ? "self-end" : "self-start"}`}>
-        {infoStatus === "true" && <div className="chat-bubble chat-bubble-success">{verificationData}</div>}
-        {infoStatus === "false" && <div className="chat-bubble chat-bubble-error">{verificationData}</div>}
-        {infoStatus === "unverifiable" && <div className="chat-bubble chat-bubble-warning">{verificationData}</div>}
+      <div className="flex gap-2 items-center">
+        <button className="btn btn-outline btn-xs" onClick={() => handleTranslate(message)}>Traduire</button>
+        {!verificationData && <button className="btn btn-outline btn-accent btn-xs" onClick={handleVerify}>Verify</button>}
+        {verificationData && 
+        <div className={`chat flex`}>
+          {infoStatus === "true" && <div className="text-lime-500">True</div>}
+          {infoStatus === "false" && <div className="text-red-500">False</div>}
+          {infoStatus === "unverifiable" && <div className="text-orange-500">Data can't be verified</div>}
+        </div>
+        } 
       </div>
-      } 
     </div>
   );
 };

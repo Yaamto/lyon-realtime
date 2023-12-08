@@ -5,8 +5,9 @@ interface Props {
   messages: IMessage[];
   username: string;
   socket: any;
+  language: string;
 }
-const Messages = ({ messages, username, socket }: Props) => {
+const Messages = ({ messages, username, socket, language }: Props) => {
   const messagesContainerRef: any = useRef(null);
   const scrollToBottom = () => {
     if (messagesContainerRef.current) {
@@ -15,14 +16,15 @@ const Messages = ({ messages, username, socket }: Props) => {
   };
 
   useEffect(() => {
+    console.log({messages})
     scrollToBottom();
   }, [messages]);
 
   return (
     <div className="h-[500px] bg-slate-700 overflow-auto w-1/2 mx-auto rounded-lg" ref={messagesContainerRef}>
-      {messages.map((msg) => (
+      {messages.length > 0 && messages.map((msg) => (
         <div key={msg.timeSent} className="">
-          <Message message={msg} isMe={msg.username === username} socket={socket} />
+          <Message message={msg} isMe={msg.username === username} socket={socket} language={language}/>
         </div>
       ))}
     </div>
